@@ -49,11 +49,13 @@ jobs:
       - name: Find workspace and scheme
         id: xcode
         run: |
-          workspace=$(ls ios/*.xcworkspace | head -n 1)
+          workspace=$(ls -d ios/*.xcworkspace | head -n 1)
           scheme=$(basename "$workspace" .xcworkspace)
           echo "workspace=$workspace" >> "$GITHUB_OUTPUT"
           echo "scheme=$scheme" >> "$GITHUB_OUTPUT"
           echo "workspace=$workspace · scheme=$scheme"
+          echo "--- ios/ contents ---"
+          ls -la ios/
 
       - name: Archive (unsigned)
         run: |
