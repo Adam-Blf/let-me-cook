@@ -1,0 +1,85 @@
+{
+  "expo": {
+    "name": "Let Me Cook",
+    "slug": "let-me-cook",
+    "scheme": "letmecook",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#F6F1E8"
+    },
+    "ios": {
+      "bundleIdentifier": "com.adambeloucif.letmecook",
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Cooky utilise l'appareil photo pour scanner les livres et posts de recettes.",
+        "NSPhotoLibraryUsageDescription": "Cooky accède à tes photos pour importer une recette depuis une capture d'écran.",
+        "LSApplicationQueriesSchemes": ["tiktok", "instagram", "fb", "youtube"],
+        "CFBundleDocumentTypes": [
+          {
+            "CFBundleTypeName": "Recipe link",
+            "LSHandlerRank": "Alternate",
+            "LSItemContentTypes": ["public.url"]
+          }
+        ],
+        "NSExtension": {
+          "NSExtensionAttributes": {
+            "NSExtensionActivationRule": {
+              "NSExtensionActivationSupportsText": true,
+              "NSExtensionActivationSupportsWebURLWithMaxCount": 1
+            }
+          }
+        }
+      }
+    },
+    "android": {
+      "package": "com.adambeloucif.letmecook",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#F6F1E8"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "intentFilters": [
+        {
+          "action": "SEND",
+          "category": ["DEFAULT"],
+          "data": [{ "mimeType": "text/plain" }]
+        },
+        {
+          "action": "SEND",
+          "category": ["DEFAULT"],
+          "data": [{ "mimeType": "image/*" }]
+        },
+        {
+          "action": "VIEW",
+          "category": ["DEFAULT", "BROWSABLE"],
+          "data": [
+            { "scheme": "https", "host": "*.tiktok.com" },
+            { "scheme": "https", "host": "*.instagram.com" },
+            { "scheme": "https", "host": "*.facebook.com" },
+            { "scheme": "https", "host": "*.youtube.com" },
+            { "scheme": "https", "host": "youtu.be" },
+            { "scheme": "https", "host": "*.pinterest.com" }
+          ]
+        }
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

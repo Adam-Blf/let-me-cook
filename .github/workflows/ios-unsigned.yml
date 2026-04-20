@@ -1,0 +1,95 @@
+# Build un .ipa iOS non signé pour sideload via AltStore / Sideloadly.
+# Runner macos-latest · 200 min/mois gratuit en repo privé, illimité en public.
+# Trigger manuel · onglet Actions sur GitHub → "Run workflow".
+
+name: iOS unsigned build
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'ios-v*'
+
+concurrency:
+  group: ios-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: macos-latest
+    timeout-minutes: 40
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install JS deps
+        run: npm ci --legacy-peer-deps
+
+      - name: Prebuild iOS
+        run: npx expo prebuild --platform ios --non-interactive --clean
+
+      - name: Cache CocoaPods
+        uses: actions/cache@v4
+        with:
+          path: ios/Pods
+          key: pods-${{ hashFiles('ios/Podfile.lock') }}
+          restore-keys: pods-
+
+      - name: Install Pods
+        working-directory: ios
+        run: pod install --repo-update
+
+      - name: Find workspace and scheme
+        id: xcode
+        run: |
+          workspace=$(ls ios/*.xcworkspace | head -n 1)
+          scheme=$(basename "$workspace" .xcworkspace)
+          echo "workspace=$workspace" >> "$GITHUB_OUTPUT"
+          echo "scheme=$scheme" >> "$GITHUB_OUTPUT"
+          echo "workspace=$workspace · scheme=$scheme"
+
+      - name: Archive (unsigned)
+        run: |
+          xcodebuild \
+            -workspace "${{ steps.xcode.outputs.workspace }}" \
+            -scheme "${{ steps.xcode.outputs.scheme }}" \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -archivePath build/app.xcarchive \
+            archive \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            DEVELOPMENT_TEAM="" \
+            PROVISIONING_PROFILE_SPECIFIER="" \
+            | xcpretty && exit ${PIPESTATUS[0]}
+
+      - name: Package as .ipa
+        run: |
+          mkdir -p Payload
+          cp -R build/app.xcarchive/Products/Applications/*.app Payload/
+          zip -r LetMeCook-unsigned.ipa Payload
+          ls -lh LetMeCook-unsigned.ipa
+
+      - name: Upload .ipa
+        uses: actions/upload-artifact@v4
+        with:
+          name: LetMeCook-ipa-unsigned
+          path: LetMeCook-unsigned.ipa
+          retention-days: 14
+
+      - name: Upload archive (debug)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: xcarchive-debug
+          path: build/app.xcarchive
+          retention-days: 3
