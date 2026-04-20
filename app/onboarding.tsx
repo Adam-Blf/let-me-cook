@@ -22,7 +22,7 @@ export default function Onboarding() {
 
   const finish = async () => {
     await AsyncStorage.setItem('lmc_onboarded', '1');
-    router.replace('/(tabs)/library');
+    router.replace('/paywall');
   };
 
   const next = () => (step < STEPS.length - 1 ? setStep(step + 1) : finish());

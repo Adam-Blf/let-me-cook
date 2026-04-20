@@ -9,17 +9,22 @@ import { Cooky } from '../src/design/Cooky';
 import { Eyebrow } from '../src/design/ui/Eyebrow';
 import { Button } from '../src/design/ui/Button';
 import { useLang } from '../src/design/i18n';
+import { useSubscription } from '../src/subscription/useSubscription';
 import { tokens } from '../src/design/tokens';
 
 export default function SplashScreen() {
   const router = useRouter();
   const { t, lang, setLang } = useLang();
+  const { isActive, loading } = useSubscription();
 
   useEffect(() => {
-    AsyncStorage.getItem('lmc_onboarded').then((v) => {
-      if (v === '1') router.replace('/(tabs)/library');
-    });
-  }, []);
+    if (loading) return;
+    (async () => {
+      const onboarded = await AsyncStorage.getItem('lmc_onboarded');
+      if (onboarded !== '1') return;
+      router.replace(isActive ? '/(tabs)/library' : '/paywall');
+    })();
+  }, [loading, isActive]);
 
   return (
     <LinearGradient

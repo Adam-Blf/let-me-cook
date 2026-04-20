@@ -6,6 +6,7 @@ import { useFonts, InstrumentSerif_400Regular, InstrumentSerif_400Regular_Italic
 import { Geist_400Regular, Geist_500Medium, Geist_700Bold } from '@expo-google-fonts/geist';
 import { GeistMono_400Regular } from '@expo-google-fonts/geist-mono';
 import { LangProvider } from '../src/design/i18n';
+import { SubscriptionProvider } from '../src/subscription/useSubscription';
 import { tokens } from '../src/design/tokens';
 
 export default function RootLayout() {
@@ -23,18 +24,21 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <LangProvider>
-        <StatusBar style="dark" />
-        <Stack
-          screenOptions={{
-            headerShown: false,
-            contentStyle: { backgroundColor: tokens.cream },
-          }}
-        >
-          <Stack.Screen name="index" />
-          <Stack.Screen name="onboarding" />
-          <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="recipe/[id]" options={{ presentation: 'card' }} />
-        </Stack>
+        <SubscriptionProvider>
+          <StatusBar style="dark" />
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              contentStyle: { backgroundColor: tokens.cream },
+            }}
+          >
+            <Stack.Screen name="index" />
+            <Stack.Screen name="onboarding" />
+            <Stack.Screen name="paywall" options={{ presentation: 'modal', gestureEnabled: false }} />
+            <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="recipe/[id]" options={{ presentation: 'card' }} />
+          </Stack>
+        </SubscriptionProvider>
       </LangProvider>
     </SafeAreaProvider>
   );

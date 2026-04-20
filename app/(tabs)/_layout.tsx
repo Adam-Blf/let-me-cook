@@ -1,6 +1,7 @@
-import { Tabs } from 'expo-router';
+import { Tabs, Redirect } from 'expo-router';
 import { View, Text } from 'react-native';
 import { tokens } from '../../src/design/tokens';
+import { useSubscription } from '../../src/subscription/useSubscription';
 
 function TabIcon({ label, focused }: { label: string; focused: boolean }) {
   return (
@@ -32,6 +33,11 @@ function TabIcon({ label, focused }: { label: string; focused: boolean }) {
 }
 
 export default function TabsLayout() {
+  const { isActive, loading } = useSubscription();
+
+  if (loading) return <View style={{ flex: 1, backgroundColor: tokens.cream }} />;
+  if (!isActive) return <Redirect href="/paywall" />;
+
   return (
     <Tabs
       screenOptions={{
