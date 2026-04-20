@@ -1,24 +1,67 @@
-// Plans d'abonnement · source de vérité côté app.
-// Les vrais produits sont créés dans App Store Connect + Play Console et
-// exposés à l'app via RevenueCat (cf docs/paywall.md).
-export const PLANS = {
-  annual: {
-    id: 'let_me_cook_annual_v1',
-    price: 14.99,
-    currency: 'EUR',
-    priceLabel: '14,99 €',
-    period: 'year',
-    periodLabel: 'par an',
-    monthlyEquivalent: '1,25 €',
-    trialDays: 7,
-  },
+// Plans d'abonnement Let Me Cook Pro.
+//
+// En prod, les prix affichés viennent de RevenueCat qui les récupère
+// d'App Store Connect / Play Console via `product.priceString`. Ces valeurs
+// par défaut sont un fallback pour le dev et les skeleton loading.
+//
+// Entitlement RevenueCat · "Let Me Cook Pro" (exact match dashboard).
+// Offering par défaut · "default" avec 3 packages : monthly · yearly · lifetime.
+export const ENTITLEMENT_ID = 'Let Me Cook Pro';
+export const OFFERING_ID = 'default';
+
+export const PACKAGE_IDS = {
+  monthly: 'monthly',
+  yearly: 'yearly',
+  lifetime: 'lifetime',
 } as const;
 
-export type PlanId = keyof typeof PLANS;
+export type PlanKey = keyof typeof PACKAGE_IDS;
 
-export const DEFAULT_PLAN: PlanId = 'annual';
+// Prix par défaut basés sur analyse COGS + benchmark marché · ajuste dans
+// App Store Connect / Play Console pour les vrais prix.
+export const PLANS: Record<PlanKey, {
+  packageId: string;
+  price: number;
+  currency: 'EUR';
+  priceLabel: string;
+  monthlyEquivalentLabel: string;
+  periodLabel: { fr: string; en: string };
+  badge?: { fr: string; en: string };
+  trialDays?: number;
+}> = {
+  monthly: {
+    packageId: 'monthly',
+    price: 4.99,
+    currency: 'EUR',
+    priceLabel: '4,99 €',
+    monthlyEquivalentLabel: '4,99 €/mois',
+    periodLabel: { fr: 'par mois', en: 'per month' },
+    trialDays: 7,
+  },
+  yearly: {
+    packageId: 'yearly',
+    price: 24.99,
+    currency: 'EUR',
+    priceLabel: '24,99 €',
+    monthlyEquivalentLabel: '2,08 €/mois',
+    periodLabel: { fr: 'par an · économise 58 %', en: 'per year · save 58%' },
+    badge: { fr: 'LE PLUS POPULAIRE', en: 'MOST POPULAR' },
+    trialDays: 7,
+  },
+  lifetime: {
+    packageId: 'lifetime',
+    price: 59.99,
+    currency: 'EUR',
+    priceLabel: '59,99 €',
+    monthlyEquivalentLabel: 'paiement unique',
+    periodLabel: { fr: 'à vie · jamais renouvelé', en: 'lifetime · never renews' },
+    badge: { fr: 'EARLY BIRD', en: 'EARLY BIRD' },
+  },
+};
 
-/** Bénéfices affichés sur le paywall */
+export const DEFAULT_PLAN: PlanKey = 'yearly';
+
+/** Features affichées sur le paywall */
 export const PAYWALL_FEATURES = [
   { icon: '∞', fr: 'Extractions illimitées', en: 'Unlimited extractions' },
   { icon: '▶', fr: 'TikTok · Reels · YouTube · Facebook · Pinterest', en: 'TikTok · Reels · YouTube · Facebook · Pinterest' },
