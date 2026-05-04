@@ -1,5 +1,10 @@
 # Let Me Cook · app mobile iOS + Android
 
+<!-- adam-badges:start -->
+[![commits](https://img.shields.io/github/commit-activity/t/Adam-Blf/let-me-cook?color=001329&label=commits&style=flat-square)](https://github.com/Adam-Blf/let-me-cook/commits) [![visites](https://hits.sh/github.com/Adam-Blf/let-me-cook.svg?style=flat-square&label=visites&color=001329)](https://hits.sh/github.com/Adam-Blf/let-me-cook/) [![last commit](https://img.shields.io/github/last-commit/Adam-Blf/let-me-cook?color=D4A437&style=flat-square&label=dernier%20push)](https://github.com/Adam-Blf/let-me-cook/commits) [![top language](https://img.shields.io/github/languages/top/Adam-Blf/let-me-cook?style=flat-square)](https://github.com/Adam-Blf/let-me-cook) [![license](https://img.shields.io/github/license/Adam-Blf/let-me-cook?style=flat-square&color=D4A437)](LICENSE)
+<!-- adam-badges:end -->
+
+
 App Expo React Native qui extrait des recettes depuis des vidéos, photos
 et articles partagés (TikTok, Reels, YouTube Shorts, Facebook,
 Pinterest, blogs, livres). Mascotte : **Cooky**, le petit chef.
