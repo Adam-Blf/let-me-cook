@@ -12,6 +12,33 @@ Pinterest, blogs, livres). Mascotte : **Cooky**, le petit chef.
 - Proto web de référence : https://let-me-cook-lyart.vercel.app
 - Source design : `C:\Users\adamb\let-me-cook\`
 
+## Architecture
+
+```mermaid
+flowchart TB
+    Root["app/_layout.tsx<br/>Expo Router · root stack · fonts · i18n"]
+    Index["app/index.tsx<br/>splash · routage initial"]
+    Onboarding["app/onboarding.tsx<br/>première ouverture"]
+    Tabs["app/(tabs)<br/>add · search · library · shopping · profile"]
+    Recipe["app/recipe/[id].tsx<br/>détail recette · cook mode"]
+    Paywall["app/paywall.tsx<br/>écran abonnement"]
+    Design["src/design<br/>tokens · Cooky · recipes · i18n · ui/*"]
+    Sub["src/subscription<br/>useSubscription · plans · revenuecat"]
+    Store["AsyncStorage<br/>langue · état onboarding"]
+    RC["RevenueCat<br/>react-native-purchases"]
+
+    Root --> Index
+    Index --> Onboarding
+    Index --> Tabs
+    Tabs --> Recipe
+    Tabs --> Paywall
+    Tabs --> Design
+    Recipe --> Design
+    Paywall --> Sub
+    Sub --> RC
+    Root --> Store
+```
+
 ## Stack
 
 - Expo SDK 54 · React Native 0.81 · React 19
