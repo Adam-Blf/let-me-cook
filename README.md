@@ -198,3 +198,14 @@ let-me-cook-app/
 - Remplace dans `eas.json` les `REPLACE_WITH_*` par les IDs réels après
   création des fiches sur App Store Connect et Play Console.
 - iOS · bundle `com.adambeloucif.letmecook` · Android · package idem.
+
+
+## Star History
+
+<a href="https://www.star-history.com/?repos=Adam-Blf%2Flet-me-cook&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=Adam-Blf/let-me-cook&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=Adam-Blf/let-me-cook&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=Adam-Blf/let-me-cook&type=date&legend=top-left" />
+ </picture>
+</a>
